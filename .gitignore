@@ -1,0 +1,11 @@
+*.a
+*.o
+*#*
+*~
+*.gc*
+resources/
+.idea/
+vgcore.*
+liblinkedlist.a
+liblinkedlist.a.test
+liblinkedlist.a.debug
