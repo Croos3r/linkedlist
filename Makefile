@@ -68,8 +68,8 @@ fclean: clean
 	$(RM) $(ARCHIVE) $(TST_BINARY)
 
 aclean: fclean
-	find . \( -ARCHIVE "#*#" -o -ARCHIVE "*~" -o -ARCHIVE "*.gcda" \
-	-o -ARCHIVE "*.gcno" -o -ARCHIVE "vgcore.*" \) -delete
+	find . \( -name "#*#" -o -name "*~" -o -name "*.gcda" \
+	-o -name "*.gcno" -o -name "vgcore.*" \) -delete
 
 # Installation targets:
 
