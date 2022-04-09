@@ -26,6 +26,9 @@ CFLAGS			+=
 LDFLAGS			+= 	-L $(LIB_DIR)
 LDLIBS			+= 	$(addprefix -l, $(LIBS))
 
+HEADERS_DEST	=	$(HEADERS:%=../../%)
+ARCHIVE_DEST	=	$(ARCHIVE:%=../%)
+
 CC				=	gcc
 AR				=	ar
 
