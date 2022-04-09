@@ -31,6 +31,7 @@ ARCHIVE_DEST	=	$(ARCHIVE:%=../%)
 
 CC				=	gcc
 AR				=	ar
+CP				=	cp
 
 # Build targets:
 
@@ -78,7 +79,7 @@ install: $(HEADERS_DEST) $(ARCHIVE_DEST)
 $(HEADERS_DEST): 
 	$(CP) $(@:../../%=%) $@
 
-$(ARCHIVE_DEST):
+$(ARCHIVE_DEST): $(ARCHIVE)
 	$(CP) $(ARCHIVE) $@
 
 # Makefile's safety:
