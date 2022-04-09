@@ -1,51 +1,71 @@
 ##
-## EPITECH PROJECT, 2021
-## LibLinkedList
+## EPITECH PROJECT, 2022
+##
 ## File description:
 ## Makefile of the project
 ##
 
-SRC			=	src/list.c	\
-				src/list2.c
-OBJ			=	$(SRC:.c=.o)
-TST			=	tests/test_lists.c
-TST_OBJ		=	$(SRC:.c=.o) $(TST:.c=.o)
+SRC_DIR			=	src
+SRC				=	$(wildcard $(SRC_DIR)/*.c)
+OBJ				=	$(SRC:.c=.o)
+TST_DIR			=	tests
+TST				=	$(wildcard $(TST_DIR)/*.c)
+TST_OBJ			=	$(SRC:.c=.o) $(TST:.c=.o)
+LIB_DIR			=
+LIBS			=
+LIBS_ARCHIVES	=	$(LIBS:%=$(LIB_DIR)/lib%.a)
 
-NAME		=	liblinkedlist.a
+NAME			=	linkedlist
+ARCHIVE			=	$(NAME:%=lib%.a)
+TST_BINARY		= 	$(ARCHIVE).test
 
-CPPFLAGS 	+=	-iquote include
-CFLAGS		+=	-Wall -Wextra -Wpedantic
-LDFLAGS 	+=	-Llib/my
-LDLIBS		+=	-lmy
+CPPFLAGS		+= 	-Wall -Wextra -iquote "include"
+CFLAGS			+=
+LDFLAGS			+= 	-L $(LIB_DIR)
+LDLIBS			+= 	$(addprefix -l, $(LIBS))
 
-CC			=	gcc
-AR			=	ar
+CC				=	gcc
+AR				=	ar
 
-all:	$(NAME)
+# Build targets:
 
-$(NAME):	$(OBJ)
-	$(AR) rc $(NAME) $(OBJ)
+all: $(ARCHIVE)
 
-clean:
-	@find . \( -name "#*#" -o -name "*~" -o -name "*.o" \
-	-o -name "*.gcda" -o -name "*.gcno" -o -name "vgcore.*" \) -delete
+$(ARCHIVE): $(OBJ)
+	$(AR) rc $(ARCHIVE) $(OBJ)
 
-fclean:	clean
-	@rm -f $(NAME)
-	@rm -f $(NAME).test
-	@make fclean -C lib/my
+$(TST_BINARY): LIBS		+=	criterion gcov
+$(TST_BINARY): CFLAGS 	+=	-ftest-coverage -fprofile-arcs
+$(TST_BINARY): $(TST_OBJ) $(LIBS_ARCHIVES)
+	$(CC) $(TST_OBJ) -o $(TST_BINARY) $(LDFLAGS) $(LDLIBS)
 
-build_lib:
-	@make -C lib/my
-
-tests_run:	LDLIBS	+=	-lcriterion
-tests_run:	CFLAGS	+=	--coverage
-tests_run:	clean	$(TST_OBJ)	build_lib
-	$(CC) $(TST_OBJ) -o $(NAME).test $(LDFLAGS) $(LDLIBS) --coverage
-	./$(NAME).test
-	gcovr --exclude tests/
-	gcovr --exclude tests/ --branches
+$(LIBS_ARCHIVES): $(LIB_DIR)
+	$(MAKE) -C $(@:$(LIB_DIR)/lib%.a=$(LIB_DIR)/%)
 
 re:	fclean all
 
-.PHONY: all clean fclean build_lib tests_run re $(NAME)
+# Tests and debug:
+
+tests_run: $(TST_BINARY)
+	./$(TST_BINARY)
+	gcovr --exclude $(TST_DIR)
+	gcovr --exclude $(TST_DIR) --branches
+
+debug: $(DEBUG_ARCHIVE)
+	valgrind ./$(DEBUG_ARCHIVE) $(ARGS)
+
+# Cleaning targets:
+
+clean:
+	$(RM) $(OBJ) $(TST_OBJ)
+
+fclean: clean
+	$(RM) $(ARCHIVE) $(TST_BINARY)
+
+aclean: fclean
+	find . \( -ARCHIVE "#*#" -o -ARCHIVE "*~" -o -ARCHIVE "*.gcda" \
+	-o -ARCHIVE "*.gcno" -o -ARCHIVE "vgcore.*" \) -delete
+
+# Makefile's safety:
+
+.PHONY: all clean fclean aclean build_lib tests_run re debug
