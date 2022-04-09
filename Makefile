@@ -1,10 +1,12 @@
 ##
 ## EPITECH PROJECT, 2022
-##
+## Linked lists Library
 ## File description:
 ## Makefile of the project
 ##
 
+HEADERS_DIR		=	include
+HEADERS			=	$(wildcard $(HEADERS_DIR)/*.h)
 SRC_DIR			=	src
 SRC				=	$(wildcard $(SRC_DIR)/*.c)
 OBJ				=	$(SRC:.c=.o)
@@ -65,6 +67,16 @@ fclean: clean
 aclean: fclean
 	find . \( -ARCHIVE "#*#" -o -ARCHIVE "*~" -o -ARCHIVE "*.gcda" \
 	-o -ARCHIVE "*.gcno" -o -ARCHIVE "vgcore.*" \) -delete
+
+# Installation targets:
+
+install: $(HEADERS_DEST) $(ARCHIVE_DEST)
+
+$(HEADERS_DEST): 
+	$(CP) $(@:../../%=%) $@
+
+$(ARCHIVE_DEST):
+	$(CP) $(ARCHIVE) $@
 
 # Makefile's safety:
 
