@@ -1,0 +1,21 @@
+name: Project's Continuous Integration
+
+on: [ push, pull_request ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    container: epitechcontent/epitest-docker:latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build project
+        run: make
+  unit_test:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    container: epitechcontent/epitest-docker:latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run unit tests
+        run: make tests_run
