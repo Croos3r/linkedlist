@@ -7,7 +7,6 @@
 
 #include <stddef.h>
 #include <stdlib.h>
-#include "my.h"
 #include "list.h"
 
 void for_each_element(list_t *list, void (* consumer)(size_t, void *))
