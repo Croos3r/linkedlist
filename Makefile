@@ -11,7 +11,7 @@ OBJ				=	$(SRC:.c=.o)
 TST_DIR			=	tests
 TST				=	$(wildcard $(TST_DIR)/*.c)
 TST_OBJ			=	$(SRC:.c=.o) $(TST:.c=.o)
-LIB_DIR			=
+LIB_DIR			=	lib
 LIBS			=
 LIBS_ARCHIVES	=	$(LIBS:%=$(LIB_DIR)/lib%.a)
 
